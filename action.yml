@@ -1,0 +1,33 @@
+name: ForkFinder
+description: "A GitHub action to find the URL of a user's fork for a given repository."
+
+inputs:
+  owner:
+    description: 'The owner of the repository to search for forks'
+    required: false
+  repo:
+    description: 'The name of the repository to search for forks'
+    required: false
+  target_user:
+    description: 'The target user to search for in forks'
+    required: false
+  target_branch:
+    description: 'The target branch to search for in forks'
+    required: false
+  token:
+    description: 'The GitHub token to use to authenticate with the GitHub API'
+    required: true
+
+outputs:
+  user_fork_url:
+    description: 'The URL of the user fork'
+  target_branch_found:
+    description: 'Whether or not the target branch was found in the user fork'
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
+
+branding:
+  icon: 'tag'
+  color: 'gray-dark'
