@@ -7,7 +7,7 @@ A GitHub action to find the URL of a user's fork for a given repository.
 ```yaml
 - name: Find Fork
   id: forkfinder
-  uses: Kas-tle/ForkFinder@v1.0.0
+  uses: Kas-tle/ForkFinder@v1.0.1
   with:
     owner: 'Kas-tle'
     repo: 'ForkFinder'
