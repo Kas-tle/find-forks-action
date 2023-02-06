@@ -1,4 +1,4 @@
-# ForkFinder
+# Find Forks Action
 
 A GitHub action to find the URL of a user's fork for a given repository. 
 
