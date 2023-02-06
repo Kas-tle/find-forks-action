@@ -21,7 +21,7 @@ A GitHub action to find the URL of a user's fork for a given repository.
 - `owner` - The owner of the repository to find the fork of. If none is specified, the owner of the repository in which the action is running will be used.
 - `repo` - The name of the repository to find the fork of. If none is specified, the repository in which the action is running will be used.
 - `target_user` - The user to find the fork of. If none is specified in the case of a PR, the user who authored the PR will be used. If none is specified in any other context, the owner of the repository in which the action is running will be used.
-- `target_branch` - The branch to find the fork of. If none is specified, the action will not attempt to validate if the target user's fork has a specific branch.
+- `target_branch` - The branch to find the fork of. If none is specified, in the case of a PR, the branch of the PR will be used. If none is specified in any other context, the current branch will be used.
 - `token` - The GitHub token to use for authentication with the GitHub API (Required).
 
 ## Outputs
