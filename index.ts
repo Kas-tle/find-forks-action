@@ -1,15 +1,16 @@
-const https = require("https");
-const core = require('@actions/core');
-const github = require('@actions/github');
-const fs = require("fs");
+import https from "https";
+import core from '@actions/core';
+import github from '@actions/github';
+import fs from "fs";
+import { RestEndpointMethodTypes } from "@octokit/rest";
 
 try {
     const context = github.context;
     const { owner: currentOwner, repo: currentRepo } = context.repo;
-    const eventPath = process.env.GITHUB_EVENT_PATH;
+    const eventPath: string = process.env.GITHUB_EVENT_PATH!;
     const event = JSON.parse(fs.readFileSync(eventPath, "utf-8"));
-    let repositoryOwner = process.env.GITHUB_REPOSITORY.split("/")[0];
-    let repositoryName = process.env.GITHUB_REPOSITORY.split("/")[1];
+    let repositoryOwner = process.env.GITHUB_REPOSITORY!.split("/")[0];
+    let repositoryName = process.env.GITHUB_REPOSITORY!.split("/")[1];
     if (event.pull_request) {
         repositoryOwner = event.pull_request.head.repo.owner.login;
         repositoryName = event.pull_request.head.ref;
@@ -21,7 +22,7 @@ try {
     const targetBranch = core.getInput('target_branch', {required: false}) || repositoryName;
     const githubToken = core.getInput('token', {required: true});
 
-    const options = {
+    const options: https.RequestOptions = {
         hostname: "api.github.com",
         headers: {
             "User-Agent": "Find Forks",
@@ -31,7 +32,7 @@ try {
 
     let forksPage = 1;
     let foundFork = false;
-    let userFork = null;
+    let userFork: string | null = null;
 
     function getForks() {
         core.debug(`Getting forks for page: ${forksPage}`);
@@ -43,7 +44,7 @@ try {
                 body += data;
             });
             res.on("end", () => {
-                const forks = JSON.parse(body);
+                const forks: RestEndpointMethodTypes["repos"]["listForks"]["response"]["data"] = JSON.parse(body);
                 if (forks.length === 0) {
                     core.info(`No match was found for user "${targetUser}"`);
                     return;
@@ -58,7 +59,7 @@ try {
                         https.get(options, res => {
                             if (res.statusCode === 200) {
                                 core.info(`Found match for user ${targetUser} with branch ${targetBranch} at URL ${userFork}`);
-                                found = true;
+                                foundFork = true;
                                 core.setOutput("target_branch_found", true);
                                 return;
                             } else if (res.statusCode === 404) {
@@ -79,6 +80,6 @@ try {
         });
     }
     getForks();
-} catch (error) {
+} catch (error: any) {
     core.setFailed(error.message);
 }
